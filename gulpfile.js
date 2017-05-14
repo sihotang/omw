@@ -81,6 +81,15 @@ gulp.task('images', () =>
         .pipe(plugins.size({ title: 'images' }))
 );
 
+/* Task: Lint Javascript
+--------------------------------------------------------------------------------- */
+gulp.task('lint', () =>
+    gulp.src(['app/scripts/**/*.js','!node_modules/**'])
+        .pipe(plugins.eslint())
+        .pipe(plugins.eslint.format())
+        .pipe(plugins.if(!syncBrowser.active, plugins.eslint.failAfterError()))
+);
+
 /* Task: Serve Browser Sync & Watch from App
 --------------------------------------------------------------------------------- */
 gulp.task('serve', ['scripts', 'styles'], () => {
@@ -94,7 +103,7 @@ gulp.task('serve', ['scripts', 'styles'], () => {
 
     gulp.watch(['app/**/*.html'], reload);
     gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-    gulp.watch(['app/scripts/**/*.js'], ['scripts', reload]);
+    gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
     gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -140,7 +149,8 @@ gulp.task('clean:app', () => del(['app/images/*', 'app/scripts/*', 'app/styles/*
 --------------------------------------------------------------------------------- */
 gulp.task('default', ['clean'], cb =>
     sequence(
-        'styles', ['scripts', 'images', 'copy'],
+        'styles',
+        ['lint', 'scripts', 'images', 'copy'],
         cb
     )
 );
