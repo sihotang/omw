@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
@@ -81,6 +81,40 @@ gulp.task('images', () =>
         .pipe(plugins.size({ title: 'images' }))
 );
 
+/* Task: Compile Views by using Pug
+--------------------------------------------------------------------------------- */
+gulp.task('views', () => {
+    var options = {
+        pretty: true,
+    };
+
+    return gulp
+        .src([
+            'resources/views/**/*.pug',
+            '!resources/views/layouts/*.pug',
+            '!resources/views/partials/*.pug'
+        ])
+        .pipe(plugins.pug(options))
+        .pipe(gulp.dest('app'))
+});
+
+/* Task: HTML Formatter
+--------------------------------------------------------------------------------- */
+gulp.task('views:prettify', () => {
+    var options = {
+        indent_size: 4,
+        indent_inner_html: true,
+        unformatted: ['pre', 'code']
+    };
+
+    return gulp
+        .src([
+            'app/**/*.html'
+        ])
+        .pipe(plugins.prettify(options))
+        .pipe(gulp.dest('./'))
+});
+
 /* Task: Lint Javascript
 --------------------------------------------------------------------------------- */
 gulp.task('lint', () =>
@@ -143,14 +177,14 @@ gulp.task('clean:cache', () => del(['storage/app/*', '!storage/app/.gitignore', 
 
 /* Task: Clean Application
 --------------------------------------------------------------------------------- */
-gulp.task('clean:app', () => del(['app/images/*', 'app/scripts/*', 'app/styles/*'], { dot: true }));
+gulp.task('clean:app', () => del(['app/images/*', 'app/scripts/*', 'app/styles/*', 'app/*', '!app/*.ico'], { dot: true }));
 
 /* Task: Default - Build Production Files
 --------------------------------------------------------------------------------- */
 gulp.task('default', ['clean'], cb =>
     sequence(
         'styles',
-        ['lint', 'scripts', 'images', 'copy'],
+        ['lint', 'scripts', 'images', 'views', 'views:prettify', 'copy'],
         cb
     )
 );
