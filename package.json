@@ -1,6 +1,6 @@
 {
-  "name": "omw",
-  "version": "1.0.0",
+  "name": "omw-starter",
+  "version": "0.0.1",
   "description": "On My Web (OMW) Starter Kit",
   "main": "gulpfile.js",
   "scripts": {
