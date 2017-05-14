@@ -39,7 +39,7 @@ gulp.task('styles', () => {
         .pipe(plugins.size({ title: 'styles' }))
         .pipe(gulp.dest('app/styles'))
         .pipe(plugins.sourcemaps.write('./'))
-        .pipe(gulp.dest('dist/styles'))
+        .pipe(gulp.dest('.dist/styles'))
         .pipe(gulp.dest('storage/app/styles'));
 });
 
@@ -59,7 +59,7 @@ gulp.task('scripts', () =>
         .pipe(plugins.size({ title: 'scripts' }))
         .pipe(gulp.dest('app/scripts'))
         .pipe(plugins.sourcemaps.write('.'))
-        .pipe(gulp.dest('dist/scripts'))
+        .pipe(gulp.dest('.dist/scripts'))
         .pipe(gulp.dest('storage/app/scripts'))
 );
 
@@ -74,7 +74,7 @@ gulp.task('images', () =>
             interlaced: true
         })))
         .pipe(gulp.dest('app/images'))
-        .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('.dist/images'))
         .pipe(gulp.dest('storage/app/images'))
         .pipe(plugins.size({ title: 'images' }))
 );
@@ -89,7 +89,7 @@ gulp.task('copy', () =>
     ], {
         dot: true
     })
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('.dist'))
     .pipe(plugins.size({title: 'copy'}))
 );
 
@@ -100,7 +100,7 @@ gulp.task('clean', ['clean:cache', 'clean:app']);
 
 /* Task: Clean Cache
 --------------------------------------------------------------------------------- */
-gulp.task('clean:cache', () => del(['storage/app/*', '!storage/app/.gitignore', 'dist/*', '!dist/.git'], { dot: true }));
+gulp.task('clean:cache', () => del(['storage/app/*', '!storage/app/.gitignore', '.dist/*', '!dist/.git'], { dot: true }));
 
 /* Task: Clean Application
 --------------------------------------------------------------------------------- */
