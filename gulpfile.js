@@ -75,6 +75,7 @@ gulp.task('images', () =>
         })))
         .pipe(gulp.dest('app/images'))
         .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('storage/app/images'))
         .pipe(plugins.size({ title: 'images' }))
 );
 
