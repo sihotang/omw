@@ -16,7 +16,8 @@ var del = require('del'),
     gulp = require('gulp'),
     path = require('path'),
     plugins = require('gulp-load-plugins')(),
-    sequence = require('run-sequence');
+    sequence = require('run-sequence'),
+    syncBrowser = require('browser-sync');
 
 /* Task: Compile SASS
 --------------------------------------------------------------------------------- */
@@ -78,6 +79,35 @@ gulp.task('images', () =>
         .pipe(gulp.dest('.dist/images'))
         .pipe(gulp.dest('storage/app/images'))
         .pipe(plugins.size({ title: 'images' }))
+);
+
+/* Task: Serve Browser Sync & Watch from App
+--------------------------------------------------------------------------------- */
+gulp.task('serve', ['scripts', 'styles'], () => {
+    syncBrowser({
+        notify: false,
+        logPrefix: 'WSK',
+        scrollElementMapping: ['main'],
+        server: ['storage/app', 'app'],
+        port: 3000
+    });
+
+    gulp.watch(['app/**/*.html'], reload);
+    gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
+    gulp.watch(['app/scripts/**/*.js'], ['scripts', reload]);
+    gulp.watch(['app/images/**/*'], reload);
+});
+
+/* Task: Serve Browser Sync from Dist
+--------------------------------------------------------------------------------- */
+gulp.task('serve:dist', ['default'], () =>
+    browserSync({
+        notify: false,
+        logPrefix: 'WSK',
+        scrollElementMapping: ['main'],
+        server: '.dist',
+        port: 3001
+    })
 );
 
 /* Task: Copy all files at the root level (app)
