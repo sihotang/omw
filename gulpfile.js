@@ -14,6 +14,7 @@ const AUTOPREFIXER_BROWSERS = [
 
 var del = require('del'),
     gulp = require('gulp'),
+    path = require('path'),
     plugins = require('gulp-load-plugins')(),
     sequence = require('run-sequence');
 
@@ -93,7 +94,6 @@ gulp.task('copy', () =>
     .pipe(plugins.size({title: 'copy'}))
 );
 
-
 /* Task: Clean & Clean Cache
 --------------------------------------------------------------------------------- */
 gulp.task('clean', ['clean:cache', 'clean:app']);
@@ -104,7 +104,7 @@ gulp.task('clean:cache', () => del(['storage/app/*', '!storage/app/.gitignore', 
 
 /* Task: Clean Application
 --------------------------------------------------------------------------------- */
-gulp.task('clean:app', () => del(['app/*'], { dot: true }));
+gulp.task('clean:app', () => del(['app/images/*', 'app/scripts/*', 'app/styles/*'], { dot: true }));
 
 /* Task: Default - Build Production Files
 --------------------------------------------------------------------------------- */
